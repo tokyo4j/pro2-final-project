@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.5.16/dist/vue.js"></script>
+    <title>Employee View</title>
+  </head>
+  <body>
+    <div id="app">
+      <furniture-table
+        :furns="furns"
+        @furns-update="syncFurns"
+      ></furniture-table>
+      <user-table :users="users" @users-update="syncUsers"></user-table>
+      <lease-table
+        :leases="leases"
+        @leases-update="syncLeases"
+        @furns-update="syncFurns"
+      ></lease-table>
+    </div>
+  </body>
+  <script>
+    var API_DOMAIN = "http://localhost:8080/api";
+  </script>
+  <script type="module">
+    import FurnTable from "./furn_table.js";
+    import UserTable from "./user_table.js";
+    import LeaseTable from "./lease_table.js";
+    new Vue({
+      el: "#app",
+      data() {
+        return {
+          furns: [],
+          users: [],
+          leases: [],
+        };
+      },
+      components: {
+        "furniture-table": FurnTable,
+        "user-table": UserTable,
+        "lease-table": LeaseTable,
+      },
+      methods: {
+        async syncFurns() {
+          this.furns = await fetch(`${API_DOMAIN}/furnitures`).then((res) =>
+            res.json()
+          );
+        },
+        async syncUsers() {
+          this.users = await fetch(`${API_DOMAIN}/users`).then((res) =>
+            res.json()
+          );
+        },
+        async syncLeases() {
+          this.leases = await fetch(`${API_DOMAIN}/leases`).then((res) =>
+            res.json()
+          );
+        },
+      },
+      mounted() {
+        this.syncFurns();
+        this.syncUsers();
+        this.syncLeases();
+      },
+    });
+  </script>
+</html>

@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.5.16/dist/vue.js"></script>
+    <title>Login</title>
+  </head>
+  <body>
+    <div id="app">
+      <div>
+        <label>user name</label>
+        <input v-model="username" />
+      </div>
+      <div>
+        <label>password</label>
+        <input v-model="password" />
+      </div>
+      <button v-on:click="handleClick">Login</button>
+    </div>
+  </body>
+  <script>
+    const API_DOMAIN = "http://localhost:8080/api";
+
+    function readCookie(key) {
+      var result;
+      return (result = new RegExp(
+        "(?:^|; )" + encodeURIComponent(key) + "=([^;]*)"
+      ).exec(document.cookie))
+        ? result[1]
+        : null;
+    }
+
+    new Vue({
+      el: "#app",
+      data() {
+        return {
+          username: "",
+          password: "",
+        };
+      },
+      methods: {
+        async handleClick() {
+          await fetch(
+            `${API_DOMAIN}/auth/login?user_name=${this.username}&password=${this.password}`,
+            {
+              method: "POST",
+            }
+          );
+          const userId = readCookie("id");
+          if (userId == "1") {
+            window.location.href = "/employee.html";
+          } else if (userId) {
+            window.location.href = "/customer.html";
+          }
+        },
+      },
+    });
+  </script>
+</html>
