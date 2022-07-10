@@ -52,14 +52,14 @@ export default {
         `${API_DOMAIN}/lease?user_id=${this.addLease_userId}&furniture_id=${this.addLease_furnId}&amount=${this.addLease_amount}`,
         { method: "PUT" }
       );
-      await this.$emit("leases-update");
-      await this.$emit("furns-update");
+      this.$emit("leases-update");
+      this.$emit("furns-update");
     },
 
     async handleDelLease(leaseId) {
       await fetch(`${API_DOMAIN}/lease/${leaseId}`, { method: "DELETE" });
-      await this.$emit("leases-update");
-      await this.$emit("furns-update");
+      this.$emit("leases-update");
+      this.$emit("furns-update");
     },
   },
 };
