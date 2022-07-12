@@ -45,7 +45,7 @@ export default {
       const formData = new FormData();
       formData.append("img_file", this.$refs.addFurn_imgFileInput.files[0]);
       await fetch(
-        `${API_DOMAIN}/furniture?name=${this.addFurn_name}&amount=${this.addFurn_amount}`,
+        `/api/furniture?name=${this.addFurn_name}&amount=${this.addFurn_amount}`,
         {
           method: "PUT",
           body: formData,
@@ -55,7 +55,7 @@ export default {
     },
 
     async handleDelFurn(furnId) {
-      await fetch(`${API_DOMAIN}/furniture/${furnId}`, { method: "DELETE" });
+      await fetch(`/api/furniture/${furnId}`, { method: "DELETE" });
       this.$emit("furns-update");
     },
   },

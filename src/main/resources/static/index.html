@@ -21,8 +21,6 @@
     </div>
   </body>
   <script>
-    const API_DOMAIN = "http://localhost:8080/api";
-
     function readCookie(key) {
       var result;
       return (result = new RegExp(
@@ -43,7 +41,7 @@
       methods: {
         async handleClick() {
           await fetch(
-            `${API_DOMAIN}/auth/login?user_name=${this.username}&password=${this.password}`,
+            `/api/auth/login?user_name=${this.username}&password=${this.password}`,
             {
               method: "POST",
             }

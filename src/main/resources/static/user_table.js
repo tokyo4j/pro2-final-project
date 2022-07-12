@@ -38,14 +38,14 @@ export default {
   methods: {
     async handleAddUser() {
       await fetch(
-        `${API_DOMAIN}/user?user_name=${this.addUser_name}&password=${this.addUser_password}`,
+        `/api/user?user_name=${this.addUser_name}&password=${this.addUser_password}`,
         { method: "PUT" }
       );
       this.$emit("users-update");
     },
 
     async handleDelUser(userId) {
-      await fetch(`${API_DOMAIN}/user/${userId}`, { method: "DELETE" });
+      await fetch(`/api/user/${userId}`, { method: "DELETE" });
       this.$emit("users-update");
     },
   },
