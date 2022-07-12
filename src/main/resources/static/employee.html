@@ -7,9 +7,14 @@
     <script src="./vue.js"></script>
     <script src="./httpVueLoader.js"></script>
     <title>Employee View</title>
+    <link rel="stylesheet" href="./bootstrap/css/bootstrap.min.css">
+    <script src="./bootstrap/js/bootstrap.min.js"></script>
+    <script src="./bootstrap/js/jquery-3.6.0.min.js"></script>
+    <script src="./bootstrap/js/popper.min.js"></script>
   </head>
   <body>
     <div id="app">
+      <my-header></my-header>
       <furn-table :furns="furns" @furns-update="syncFurns"></furn-table>
       <user-table :users="users" @users-update="syncUsers"></user-table>
       <lease-table
@@ -18,6 +23,7 @@
         :furns="furns"
         @leases-update="handleLeasesUpdate"
       ></lease-table>
+      <my-footer></my-footer>
     </div>
   </body>
   <script>
@@ -31,9 +37,11 @@
         };
       },
       components: {
+        "my-header": httpVueLoader("./header.vue"),
         "furn-table": httpVueLoader("./furn-table.vue"),
         "user-table": httpVueLoader("./user-table.vue"),
         "lease-table": httpVueLoader("./lease-table.vue"),
+        "my-footer": httpVueLoader("./footer.vue"),
       },
       methods: {
         async syncFurns() {
