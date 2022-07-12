@@ -4,15 +4,13 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <script src="https://cdn.jsdelivr.net/npm/vue@2.5.16/dist/vue.js"></script>
+    <script src="./vue.js"></script>
+    <script src="./httpVueLoader.js"></script>
     <title>Employee View</title>
   </head>
   <body>
     <div id="app">
-      <furniture-table
-        :furns="furns"
-        @furns-update="syncFurns"
-      ></furniture-table>
+      <furn-table :furns="furns" @furns-update="syncFurns"></furn-table>
       <user-table :users="users" @users-update="syncUsers"></user-table>
       <lease-table
         :leases="leases"
@@ -22,10 +20,7 @@
       ></lease-table>
     </div>
   </body>
-  <script type="module">
-    import FurnTable from "./furn_table.js";
-    import UserTable from "./user_table.js";
-    import LeaseTable from "./lease_table.js";
+  <script>
     new Vue({
       el: "#app",
       data() {
@@ -36,9 +31,9 @@
         };
       },
       components: {
-        "furniture-table": FurnTable,
-        "user-table": UserTable,
-        "lease-table": LeaseTable,
+        "furn-table": httpVueLoader("./furn-table.vue"),
+        "user-table": httpVueLoader("./user-table.vue"),
+        "lease-table": httpVueLoader("./lease-table.vue"),
       },
       methods: {
         async syncFurns() {

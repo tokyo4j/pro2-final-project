@@ -36,7 +36,7 @@ public class LeaseController {
     @PutMapping("lease")
     public String addLease(
             @CookieValue("id") Long userId,
-            @RequestParam("user_id") Long targetUserId,
+            @RequestParam(value = "user_id", required = false) Long targetUserId,
             @RequestParam("furniture_id") Long furnId,
             @RequestParam("amount") Integer amount) {
 

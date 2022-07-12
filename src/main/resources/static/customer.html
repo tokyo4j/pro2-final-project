@@ -4,9 +4,50 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
+    <script src="./vue.js"></script>
+    <script src="./httpVueLoader.js"></script>
+    <title>Customer View</title>
   </head>
   <body>
-    Hello Customer
+    <div id="app">
+      <furn-table-customer
+        :furns="furns"
+        @furn-leased="syncAll"
+      ></furn-table-customer>
+      <lease-table-customer
+        :leases="leases"
+        @furn-returned="syncAll"
+      ></lease-table-customer>
+    </div>
   </body>
+  <script>
+    new Vue({
+      data() {
+        return {
+          furns: [],
+          leases: [],
+        };
+      },
+      el: "#app",
+      components: {
+        "furn-table-customer": httpVueLoader("./furn-table-customer.vue"),
+        "lease-table-customer": httpVueLoader("./lease-table-customer.vue"),
+      },
+      methods: {
+        async syncFurns() {
+          this.furns = await fetch("/api/furnitures").then((res) => res.json());
+        },
+        async syncLeases() {
+          this.leases = await fetch("/api/leases").then((res) => res.json());
+        },
+        async syncAll() {
+          await this.syncFurns();
+          await this.syncLeases();
+        },
+      },
+      async mounted() {
+        await this.syncAll();
+      },
+    });
+  </script>
 </html>
