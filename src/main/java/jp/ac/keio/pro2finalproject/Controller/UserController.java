@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import jp.ac.keio.pro2finalproject.Entity.User;
 import jp.ac.keio.pro2finalproject.Service.FurnService;
 import jp.ac.keio.pro2finalproject.Service.UserService;
+import jp.ac.keio.pro2finalproject.exception.AuthorizationException;
 
 @RestController
 @RequestMapping("api")
@@ -28,7 +29,7 @@ public class UserController {
     @GetMapping("users")
     public List<User> getAllUsers(@CookieValue("id") Long userId) {
         if (userId != 1) {
-            throw new RuntimeException("Not authorized.");
+            throw new AuthorizationException();
         }
         var users = userService.findAll();
 
@@ -41,7 +42,7 @@ public class UserController {
             @RequestParam("user_name") String userName,
             @RequestParam("password") String password) {
         if (userId != 1) {
-            throw new RuntimeException("Not authorized.");
+            throw new AuthorizationException("Not authorized.");
         }
         userService.addUser(userName, password);
         return "User added.";
@@ -52,10 +53,10 @@ public class UserController {
             @CookieValue("id") Long userId,
             @PathVariable("userId") Long targetUserId) {
         if (userId != 1) {
-            throw new RuntimeException("Not authorized.");
+            throw new AuthorizationException("Not authorized.");
         }
         if (targetUserId == 1) {
-            throw new RuntimeException("Administrator cannot be deleted.");
+            throw new AuthorizationException("Administrator cannot be deleted.");
         }
         userService.deleteById(targetUserId);
         return "User deleted.";

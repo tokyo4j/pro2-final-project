@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import jp.ac.keio.pro2finalproject.Entity.User;
 import jp.ac.keio.pro2finalproject.Repository.UserRepository;
+import jp.ac.keio.pro2finalproject.exception.AuthenticationException;
 
 @Service
 public class UserService {
@@ -22,15 +23,9 @@ public class UserService {
         if (user.getPassword().equals(password)) {
             return user.getId();
         } else {
-            throw new RuntimeException("Password does not match.");
+            throw new AuthenticationException("Password does not match.");
         }
     }
-
-    // public User getUserById(Long id) {
-    // var user = userRepository.findById(id).get();
-
-    // return user;
-    // }
 
     public void addUser(String useranme, String password) {
         var user = new User();

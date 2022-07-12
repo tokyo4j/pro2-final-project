@@ -2,12 +2,19 @@ export default {
   template: `
 <div>
   <div>
-    <label>User ID</label>
-    <input v-model="addLease_userId" />
-    <label>Furniture ID</label>
-    <input v-model="addLease_furnId" />
-    <label>Amount</label>
-    <input v-model.number="addLease_amount" />
+    <select v-model="addLease_userId">
+      <option value="" disabled selected>Select User</option>
+      <option v-for="user in users" v-bind:value="user.id" >
+        {{user.name}}
+      </option>
+    </select>
+    <select v-model="addLease_furnId">
+      <option value="" disabled selected>Select Furniture</option>
+      <option v-for="furn in furns" v-bind:value="furn.id" >
+        {{furn.name}}
+      </option>
+    </select>
+    <input v-model.number="addLease_amount" placeholder="Amount" />
     <button @click="handleAddLease">Add Lease</button>
   </div>
   <div>
@@ -37,29 +44,26 @@ export default {
   </div>
 </div>
 `,
-  props: ["leases"],
+  props: ["leases", "users", "furns"],
   data() {
     return {
       addLease_userId: "",
       addLease_furnId: "",
       addLease_amount: 0,
-      // users: [],
     };
   },
   methods: {
     async handleAddLease() {
       await fetch(
-        `${API_DOMAIN}/lease?user_id=${this.addLease_userId}&furniture_id=${this.addLease_furnId}&amount=${this.addLease_amount}`,
+        `/api/lease?user_id=${this.addLease_userId}&furniture_id=${this.addLease_furnId}&amount=${this.addLease_amount}`,
         { method: "PUT" }
       );
       this.$emit("leases-update");
-      this.$emit("furns-update");
     },
 
     async handleDelLease(leaseId) {
-      await fetch(`${API_DOMAIN}/lease/${leaseId}`, { method: "DELETE" });
+      await fetch(`/api/lease/${leaseId}`, { method: "DELETE" });
       this.$emit("leases-update");
-      this.$emit("furns-update");
     },
   },
 };

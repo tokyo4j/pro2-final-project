@@ -16,14 +16,12 @@
       <user-table :users="users" @users-update="syncUsers"></user-table>
       <lease-table
         :leases="leases"
-        @leases-update="syncLeases"
-        @furns-update="syncFurns"
+        :users="users"
+        :furns="furns"
+        @leases-update="handleLeasesUpdate"
       ></lease-table>
     </div>
   </body>
-  <script>
-    var API_DOMAIN = "http://localhost:8080/api";
-  </script>
   <script type="module">
     import FurnTable from "./furn_table.js";
     import UserTable from "./user_table.js";
@@ -44,19 +42,17 @@
       },
       methods: {
         async syncFurns() {
-          this.furns = await fetch(`${API_DOMAIN}/furnitures`).then((res) =>
-            res.json()
-          );
+          this.furns = await fetch("/api/furnitures").then((res) => res.json());
         },
         async syncUsers() {
-          this.users = await fetch(`${API_DOMAIN}/users`).then((res) =>
-            res.json()
-          );
+          this.users = await fetch("/api/users").then((res) => res.json());
         },
         async syncLeases() {
-          this.leases = await fetch(`${API_DOMAIN}/leases`).then((res) =>
-            res.json()
-          );
+          this.leases = await fetch("/api/leases").then((res) => res.json());
+        },
+        async handleLeasesUpdate() {
+          await this.syncLeases();
+          await this.syncFurns();
         },
       },
       mounted() {

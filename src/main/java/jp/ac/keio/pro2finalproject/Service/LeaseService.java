@@ -4,11 +4,13 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import jp.ac.keio.pro2finalproject.Entity.Lease;
 import jp.ac.keio.pro2finalproject.Repository.FurnRepository;
 import jp.ac.keio.pro2finalproject.Repository.LeaseRepository;
 import jp.ac.keio.pro2finalproject.Repository.UserRepository;
+import jp.ac.keio.pro2finalproject.exception.DataIntegrityException;
 
 @Service
 public class LeaseService {
@@ -43,13 +45,14 @@ public class LeaseService {
         return leaseRepository.findByUserId(userId);
     }
 
+    @Transactional
     public void addLease(long userId, long furnId, int amount) {
         var user = userRepository.getReferenceById(userId);
         var furn = furnRepository.findById(furnId).get();
         var currentLeasedAmount = furn.getLeasedAmount();
         var newLeasedAmount = currentLeasedAmount + amount;
         if (newLeasedAmount > furn.getAmount()) {
-            throw new RuntimeException("Out of stock.");
+            throw new DataIntegrityException("Out of stock.");
         }
         furn.setLeasedAmount(newLeasedAmount);
         var lease = new Lease();
@@ -61,6 +64,7 @@ public class LeaseService {
         leaseRepository.save(lease);
     }
 
+    @Transactional
     public void removeLease(long leaseId) {
         var lease = leaseRepository.findById(leaseId).get();
         var furn = lease.getFurn();
@@ -72,6 +76,7 @@ public class LeaseService {
         leaseRepository.delete(lease);
     }
 
+    @Transactional
     public void removeLeaseIfUserMatches(long userId, long leaseId) {
 
         var lease = leaseRepository.findByUserIdAndId(userId, leaseId);

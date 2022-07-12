@@ -8,12 +8,14 @@ import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import jp.ac.keio.pro2finalproject.Entity.Furn;
 import jp.ac.keio.pro2finalproject.Repository.FurnRepository;
 import jp.ac.keio.pro2finalproject.Repository.LeaseRepository;
+import jp.ac.keio.pro2finalproject.exception.FileAccessException;
 
 @Service
 public class FurnService {
@@ -31,6 +33,7 @@ public class FurnService {
         return furnRepository.findAll();
     }
 
+    @Transactional
     public void saveFurn(String name, int amount, MultipartFile imgFile) {
         var furn = new Furn();
         furn.setName(name);
@@ -45,9 +48,7 @@ public class FurnService {
                 Files.copy(imgFile.getInputStream(), dest);
                 furn.setImgUrl("/img/" + filename);
             } catch (IOException e) {
-                throw new RuntimeException(e.getMessage());
-            } catch (IllegalStateException e) {
-                throw new RuntimeException(e.getMessage());
+                throw new FileAccessException(e.getMessage());
             }
         }
         furnRepository.save(furn);

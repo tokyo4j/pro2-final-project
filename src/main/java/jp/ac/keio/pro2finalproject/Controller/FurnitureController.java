@@ -16,6 +16,7 @@ import org.springframework.web.multipart.MultipartFile;
 import jp.ac.keio.pro2finalproject.Entity.Furn;
 import jp.ac.keio.pro2finalproject.Service.FurnService;
 import jp.ac.keio.pro2finalproject.Service.UserService;
+import jp.ac.keio.pro2finalproject.exception.AuthorizationException;
 
 @RestController
 @RequestMapping("api")
@@ -38,7 +39,7 @@ public class FurnitureController {
             @RequestParam("amount") Integer amount,
             @RequestParam("img_file") MultipartFile imgFile) {
         if (userId != 1) {
-            throw new RuntimeException("Not authorized.");
+            throw new AuthorizationException("Not authorized.");
         }
         furnService.saveFurn(furnName, amount, imgFile);
         return "Furniture saved.";
@@ -49,7 +50,7 @@ public class FurnitureController {
             @CookieValue("id") Long userId,
             @PathVariable("furnId") Long furnId) {
         if (userId != 1) {
-            throw new RuntimeException("Not authorized.");
+            throw new AuthorizationException("Not authorized.");
         }
         furnService.deleteFurn(furnId);
         return "Furniture deleted";
