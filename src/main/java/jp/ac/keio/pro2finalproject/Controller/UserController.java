@@ -16,6 +16,7 @@ import jp.ac.keio.pro2finalproject.Entity.User;
 import jp.ac.keio.pro2finalproject.Service.FurnService;
 import jp.ac.keio.pro2finalproject.Service.UserService;
 import jp.ac.keio.pro2finalproject.exception.AuthorizationException;
+import jp.ac.keio.pro2finalproject.exception.DataIntegrityException;
 
 @RestController
 @RequestMapping("api")
@@ -42,7 +43,7 @@ public class UserController {
             @RequestParam("user_name") String userName,
             @RequestParam("password") String password) {
         if (userId != 1) {
-            throw new AuthorizationException("Not authorized.");
+            throw new AuthorizationException();
         }
         userService.addUser(userName, password);
         return "User added.";
@@ -53,10 +54,10 @@ public class UserController {
             @CookieValue("id") Long userId,
             @PathVariable("userId") Long targetUserId) {
         if (userId != 1) {
-            throw new AuthorizationException("Not authorized.");
+            throw new AuthorizationException();
         }
         if (targetUserId == 1) {
-            throw new AuthorizationException("Administrator cannot be deleted.");
+            throw new DataIntegrityException("Administrator cannot be deleted.");
         }
         userService.deleteById(targetUserId);
         return "User deleted.";

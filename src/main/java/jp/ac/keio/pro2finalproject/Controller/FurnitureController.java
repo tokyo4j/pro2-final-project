@@ -39,7 +39,7 @@ public class FurnitureController {
             @RequestParam("amount") Integer amount,
             @RequestParam("img_file") MultipartFile imgFile) {
         if (userId != 1) {
-            throw new AuthorizationException("Not authorized.");
+            throw new AuthorizationException();
         }
         furnService.saveFurn(furnName, amount, imgFile);
         return "Furniture saved.";
@@ -50,7 +50,7 @@ public class FurnitureController {
             @CookieValue("id") Long userId,
             @PathVariable("furnId") Long furnId) {
         if (userId != 1) {
-            throw new AuthorizationException("Not authorized.");
+            throw new AuthorizationException();
         }
         furnService.deleteFurn(furnId);
         return "Furniture deleted";
