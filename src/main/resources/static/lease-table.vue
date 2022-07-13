@@ -6,13 +6,13 @@
         <form class="form-inline">
           <select v-model="addLease_userId">
             <option value="" disabled selected>Select User</option>
-            <option v-for="user in users" :key="user.id">
+            <option v-for="user in users" v-bind:value="user.id" :key="user.id">
               {{ user.name }}
             </option>
           </select>
           <select v-model="addLease_furnId">
             <option value="" disabled selected>Select Furniture</option>
-            <option v-for="furn in furns" :key="furn.id">
+            <option v-for="furn in furns" v-bind:value="furn.id" :key="furn.id">
               {{ furn.name }}
             </option>
           </select>
