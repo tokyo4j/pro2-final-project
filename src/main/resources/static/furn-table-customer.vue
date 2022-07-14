@@ -2,7 +2,7 @@
   <div class="container">
     <p class="fs-5 m-4 mt-5" style="font-family: Georgia, serif;">If you need furniture, you can choose from the following to rent!</p>
     <div class="card mb-5">
-      <div class="card-header h5 mb-4">Furniture Management</div>
+      <div class="card-header h5 mb-4">Furniture List</div>
       <table class="table table-striped table-hover">
         <thead>
           <th>ID</th>

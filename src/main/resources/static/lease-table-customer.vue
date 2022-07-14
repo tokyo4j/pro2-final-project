@@ -2,7 +2,7 @@
   <div class="container">
     <p class="fs-5 m-4 mt-5" style="font-family: Georgia, serif;">When you have completed the return, press the button.</p>
     <div class="card mb-5">
-      <div class="card-header h5 mb-4">Lease Management</div>
+      <div class="card-header h5 mb-4">Lease List</div>
       <table class="table table-striped table-hover">
         <thead>
           <th>Furniture ID</th>
