@@ -1,5 +1,6 @@
 <template>
   <div class="container">
+        <p class="fs-5 m-4 mt-5" style="font-family: Georgia, serif;">We can add and delete your customer's rental furniture from this form.</p>
     <div class="card mb-5">
       <div class="card-header h5">Lease Management</div>
       <div class="card-body">
