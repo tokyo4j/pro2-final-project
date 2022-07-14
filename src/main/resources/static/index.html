@@ -4,25 +4,36 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <script src="https://cdn.jsdelivr.net/npm/vue@2.5.16/dist/vue.js"></script>
+    <script src="./vue.js"></script>
     <title>Login</title>
     <link rel="stylesheet" href="./bootstrap/css/bootstrap.min.css">
     <script src="./bootstrap/js/bootstrap.min.js"></script>
     <script src="./bootstrap/js/jquery-3.6.0.min.js"></script>
     <script src="./bootstrap/js/popper.min.js"></script>
   </head>
-  <body>
+  <body class="text-center" style="background-color: #F5F5F5;">
     <div id="app">
-      <div>
-        <label>user name</label>
-        <input v-model="username" />
+      <main class="container">
+        <div class="card mx-auto mt-5 p-3" style="width: 23rem;">
+        <form>
+          <img class="mb-4" src="./icon.JPG" alt="" width="80" height="64">
+          <h1 class="h3 mb-3 fw-normal">Please Login</h1>
+          <div class="form-floating">
+            <input type="text" class="form-control mb-0"
+            v-model="username" placeholder="keio taro" />
+            <label for="floatingInput">User name</label>
+          </div>
+          <div class="form-floating">
+            <input type="password" class="form-control mb-3"
+            v-model="password" placeholder="Password" />
+            <label for="floatingPassword">Password</label>
+          </div>
+          <button class="w-100 btn btn-lg btn-primary" type="submit"
+          v-on:click="handleClick">Sign in</button>
+          <p class="mt-5 mb-3 text-muted">&copy; 2022, Javers J</p>
+        </form>
       </div>
-      <div>
-        <label>password</label>
-        <input v-model="password" />
-      </div>
-      <button v-on:click="handleClick">Login</button>
-    </div>
+      </main>
   </body>
   <script>
     function readCookie(key) {
