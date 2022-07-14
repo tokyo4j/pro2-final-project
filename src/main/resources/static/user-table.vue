@@ -3,19 +3,29 @@
     <div class="card mb-5">
       <div class="card-header h5">User Management</div>
       <div class="card-body">
-        <label>User Name</label>
-        <input v-model="addUser_name" />
-        <label>Password</label>
-        <input v-model="addUser_password" />
+        <form class="row">
+        <div class="col">
+        <!-- <label>User Name</label> -->
+        <input class="form-control"
+        v-model="addUser_name" placeholder="User Name" />
+        </div>
+        <div class="col">
+        <!-- <label>Password</label> -->
+        <input class="form-control"
+        v-model="addUser_password" placeholder="Password" />
+        </div>
+        <div class="col">
         <button type="button" class="btn btn-outline-primary" @click="handleAddUser">Add User</button>
-        <hr class="mb-5">
+        </div>
+        </form>
+        <hr class="mb-4">
 
         <table class="table table-striped table-hover">>
           <thead>
             <th>ID</th>
             <th>Name</th>
             <th>Password</th>
-            <th></th>
+            <th>Delete</th>
           </thead>
           <tbody>
             <tr v-for="user in users" :key="user.id">

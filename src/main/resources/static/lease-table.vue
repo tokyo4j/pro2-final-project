@@ -3,21 +3,30 @@
     <div class="card mb-5">
       <div class="card-header h5">Lease Management</div>
       <div class="card-body">
-        <form class="form-inline">
-          <select v-model="addLease_userId">
-            <option value="" disabled selected>Select User</option>
+        <form class="row">
+          <div class="col">
+          <select class="form-select" v-model="addLease_userId">
+            <option value="" disabled selected>User</option>
             <option v-for="user in users" v-bind:value="user.id" :key="user.id">
               {{ user.name }}
             </option>
           </select>
-          <select v-model="addLease_furnId">
-            <option value="" disabled selected>Select Furniture</option>
+          </div>
+          <div class="col">
+          <select class="form-select" v-model="addLease_furnId">
+            <option value="" disabled selected>Furniture</option>
             <option v-for="furn in furns" v-bind:value="furn.id" :key="furn.id">
               {{ furn.name }}
             </option>
           </select>
-          <input v-model.number="addLease_amount" placeholder="Amount" />
+          </div>
+          <div class="col">
+          <input type="number" min="1" class="form-control"
+          v-model.number="addLease_amount" placeholder="Amount" />
+          </div>
+          <div class="col">
           <button type="button" class="btn btn-outline-primary" @click="handleAddLease">Add Lease</button>
+          </div>
         </form>
         <hr class="mb-5">
 
@@ -29,7 +38,8 @@
             <th>Furniture ID</th>
             <th>Furniture</th>
             <th>Amount</th>
-            <th></th>
+            <th>Image</th>
+            <th>Delete</th>
           </thead>
           <tbody>
             <tr v-for="lease in leases" :key="lease.id">
@@ -56,7 +66,7 @@ module.exports = {
     return {
       addLease_userId: "",
       addLease_furnId: "",
-      addLease_amount: 0,
+      addLease_amount: "",
     };
   },
   methods: {
