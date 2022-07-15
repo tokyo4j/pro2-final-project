@@ -1,21 +1,30 @@
 <template>
   <div class="container">
+        <p class="fs-5 m-4 mt-5" style="font-family: Georgia, serif;">We can add and delete user information from this form.</p>
     <div class="card mb-5">
       <div class="card-header h5">User Management</div>
       <div class="card-body">
-        <label>User Name</label>
-        <input v-model="addUser_name" />
-        <label>Password</label>
-        <input v-model="addUser_password" />
+        <form class="row">
+        <div class="col">
+        <input class="form-control"
+        v-model="addUser_name" placeholder="User Name" />
+        </div>
+        <div class="col">
+        <input class="form-control"
+        v-model="addUser_password" placeholder="Password" />
+        </div>
+        <div class="col">
         <button type="button" class="btn btn-outline-primary" @click="handleAddUser">Add User</button>
-        <hr class="mb-5">
+        </div>
+        </form>
+        <hr class="mb-4">
 
-        <table class="table table-striped table-hover">>
+        <table class="table table-striped table-hover">
           <thead>
             <th>ID</th>
             <th>Name</th>
             <th>Password</th>
-            <th></th>
+            <th>Delete</th>
           </thead>
           <tbody>
             <tr v-for="user in users" :key="user.id">

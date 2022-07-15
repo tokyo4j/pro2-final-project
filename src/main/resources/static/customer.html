@@ -14,6 +14,7 @@
   </head>
   <body>
     <div id="app">
+      <my-header></my-header>
       <furn-table-customer
         :furns="furns"
         @furn-leased="syncAll"
@@ -22,6 +23,7 @@
         :leases="leases"
         @furn-returned="syncAll"
       ></lease-table-customer>
+      <my-footer></my-footer>
     </div>
   </body>
   <script>
@@ -34,8 +36,10 @@
       },
       el: "#app",
       components: {
+        "my-header": httpVueLoader("./header.vue"),
         "furn-table-customer": httpVueLoader("./furn-table-customer.vue"),
         "lease-table-customer": httpVueLoader("./lease-table-customer.vue"),
+        "my-footer": httpVueLoader("./footer.vue"),
       },
       methods: {
         async syncFurns() {
