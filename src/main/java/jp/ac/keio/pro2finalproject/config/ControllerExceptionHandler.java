@@ -1,5 +1,6 @@
 package jp.ac.keio.pro2finalproject.config;
 
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -30,6 +31,12 @@ public class ControllerExceptionHandler {
     @ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR)
     public ErrorMessage internalException(Exception ex) {
         return new ErrorMessage(ex.getMessage());
+    }
+
+    @ExceptionHandler(value = { DataIntegrityViolationException.class })
+    @ResponseStatus(value = HttpStatus.BAD_REQUEST)
+    public ErrorMessage sqlException(Exception ex) {
+        return new ErrorMessage("Could not execute query.");
     }
 
     @Getter
