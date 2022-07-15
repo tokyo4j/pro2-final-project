@@ -6,12 +6,10 @@
       <div class="card-body">
         <form class="row">
         <div class="col">
-        <!-- <label>User Name</label> -->
         <input class="form-control"
         v-model="addUser_name" placeholder="User Name" />
         </div>
         <div class="col">
-        <!-- <label>Password</label> -->
         <input class="form-control"
         v-model="addUser_password" placeholder="Password" />
         </div>
@@ -21,7 +19,7 @@
         </form>
         <hr class="mb-4">
 
-        <table class="table table-striped table-hover">>
+        <table class="table table-striped table-hover">
           <thead>
             <th>ID</th>
             <th>Name</th>

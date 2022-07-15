@@ -32,6 +32,7 @@
                 <th>Available</th>
                 <th>Image</th>
                 <th>Delete</th>
+                <th>Edit</th>
               </thead>
               <tbody>
                 <tr v-for="furn in furns" :key="furn.id">
@@ -39,10 +40,17 @@
                   <td>{{ furn.name }}</td>
                   <td>{{ furn.amount }}</td>
                   <td>{{ furn.amount - furn.leasedAmount }}</td>
-                  <td><img width="100" height="100" v-bind:src="furn.imgUrl" /></td>
+                  <td>
+                    <div class="text-center">
+                      <img v-if="furn.imgUrl != null" height="100" :src="furn.imgUrl"/>
+                      <p v-else>No image</p>
+                    </div>
+                  </td>
                   <td><button type="button" class="mt-4 btn btn-outline-danger"
                       @click="handleDelFurn(furn.id)">Del</button></td>
-                  <td><button @click="handleEditButton(furn)">edit</button></td>
+                  <td><button @click="handleEditButton(furn)" type="button" class="mt-4 btn btn-success"
+                      data-bs-toggle="modal" data-bs-target="#exampleModal">Edit</button>
+                  </td>
                 </tr>
               </tbody>
             </table>
@@ -50,12 +58,44 @@
         </div>
       </div>
     </div>
-    <div v-if="isModalOpen" class="modal" style="display: block">
-      <input v-model="editingFurn.name" />
-      <input v-model.number="editingFurn.amount" />
-      <input type="file" ref="updatedImgFileInput" />
-      <button @click="handleEditSubmit">Submit</button>
+    <!-- Modal -->
+    <div v-if="isModalOpen">
+      <div class="modal" @click.self="isModalOpen = false" style="display: block;">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h4 class="modal-title">Edit this furniture</h4>
+              <button @click="isModalOpen = false" type="button" class="btn-close" data-bs-dismiss="modal"
+                aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <form>
+                <div class="mb-3">
+                  <label for="recipient-name" class="col-form-label">New name:</label>
+                  <input v-model="editingFurn.name" type="text" class="form-control" />
+                </div>
+                <div class="mb-3">
+                  <label for="recipient-name" class="col-form-label">New amount:</label>
+                  <input v-model.number="editingFurn.amount" type="text" class="form-control" />
+                </div>
+                <div class="mb-3">
+                  <label for="recipient-name" class="col-form-label">New image:</label>
+                  <input type="file" ref="updatedImgFileInput" />
+                </div>
+              </form>
+              <div class="text-center"><img src="https://www.ikea.com/jp/ja/images/products/vimle-3-seat-sofa-gunnared-medium-grey__0514368_pe639441_s5.jpg?f=xl" height="150" /></div>
+            </div>
+            <div class="modal-footer">
+              <button @click="isModalOpen = false" type="button" class="btn btn-secondary"
+                data-bs-dismiss="modal">Close</button>
+              <button @click="handleEditSubmit" type="button" class="btn btn-primary">Submit</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-backdrop show"></div>
     </div>
+
   </div>
 </template>
 <script>

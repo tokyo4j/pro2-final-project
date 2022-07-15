@@ -18,7 +18,12 @@
             <td>{{ furn.name }}</td>
             <td>{{ furn.amount }}</td>
             <td>{{ furn.amount - furn.leasedAmount }}</td>
-            <td><img width="100" height="100" v-bind:src="furn.imgUrl" /></td>
+            <td>
+              <div class="text-center">
+                <img v-if="furn.imgUrl != null" height="100" :src="furn.imgUrl"/>
+                <p v-else>No image</p>
+              </div>
+            </td>
             <td>
               <div class="input-group mt-4">
                 <input type="number" min="1" :max=furn.amount-furn.leasedAmount
