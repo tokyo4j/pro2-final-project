@@ -1,6 +1,7 @@
 <template>
   <div class="container">
-    <p class="fs-5 m-4 mt-5" style="font-family: Georgia, serif;">We can add and delete our rental furniture from this form.</p>
+    <p class="fs-5 m-4 mt-5" style="font-family: Georgia, serif;">We can add and delete our rental furniture from this
+      form.</p>
     <div class="card mb-5">
       <div class="card-header h5">Furniture Management</div>
       <div class="card-body">
@@ -40,16 +41,15 @@
                   <td>{{ furn.name }}</td>
                   <td>{{ furn.amount }}</td>
                   <td>{{ furn.amount - furn.leasedAmount }}</td>
-                  <td>
-                    <div class="text-center">
-                      <img v-if="furn.imgUrl != null" height="100" :src="furn.imgUrl"/>
-                      <p v-else>No image</p>
-                    </div>
+                  <td class="text-center">
+                    <img height="100" :src="furn.imgUrl || './empty.jpg'" />
                   </td>
-                  <td><button type="button" class="mt-4 btn btn-outline-danger"
-                      @click="handleDelFurn(furn.id)">Del</button></td>
-                  <td><button @click="handleEditButton(furn)" type="button" class="mt-4 btn btn-success"
-                      data-bs-toggle="modal" data-bs-target="#exampleModal">Edit</button>
+                  <td>
+                    <button type="button" class="mt-4 btn btn-outline-danger"
+                      @click="handleDelFurn(furn.id)">Del</button>
+                  </td>
+                  <td>
+                    <button @click="handleEditButton(furn)" type="button" class="mt-4 btn btn-success">Edit</button>
                   </td>
                 </tr>
               </tbody>
@@ -80,10 +80,10 @@
                 </div>
                 <div class="mb-3">
                   <label for="recipient-name" class="col-form-label">New image:</label>
-                  <input type="file" ref="updatedImgFileInput" />
+                  <input type="file" @change="updatePreview" ref="updatedImgFileInput" />
                 </div>
               </form>
-              <div class="text-center"><img src="https://www.ikea.com/jp/ja/images/products/vimle-3-seat-sofa-gunnared-medium-grey__0514368_pe639441_s5.jpg?f=xl" height="150" /></div>
+              <div class="text-center"><img :src="previewUrl" height="150" /></div>
             </div>
             <div class="modal-footer">
               <button @click="isModalOpen = false" type="button" class="btn btn-secondary"
@@ -95,7 +95,6 @@
       </div>
       <div class="modal-backdrop show"></div>
     </div>
-
   </div>
 </template>
 <script>
@@ -107,6 +106,7 @@ module.exports = {
       addFurn_amount: null,
       isModalOpen: false,
       editingFurn: null,
+      previewUrl: null,
     };
   },
   methods: {
@@ -128,25 +128,34 @@ module.exports = {
       this.$emit("furns-update");
     },
 
-    handleEditButton(furn){
+    handleEditButton(furn) {
       this.editingFurn = JSON.parse(JSON.stringify(furn))
+      this.previewUrl = furn.imgUrl || "./empty.jpg";
       this.isModalOpen = true;
     },
 
-    async handleEditSubmit(){
+    async handleEditSubmit() {
       const formData = new FormData();
       const file = this.$refs.updatedImgFileInput.files[0];
-      if(file)
+      if (file)
         formData.append("img_file", this.$refs.updatedImgFileInput.files[0]);
       await fetch(`/api/furniture/${this.editingFurn.id}?name=${this.editingFurn.name}&amount=${this.editingFurn.amount}`,
         {
-          method:"PATCH",
+          method: "PATCH",
           body: formData
         }
       );
       this.isModalOpen = false;
       this.$emit("furns-update");
-    }
+    },
+
+    updatePreview() {
+      const file = this.$refs.updatedImgFileInput.files[0];
+      if (file)
+        this.previewUrl = URL.createObjectURL(file);
+      else
+        this.previewUrl = this.editingFurn.imgUrl || "./empty.jpg";
+    },
   },
 };
 </script>

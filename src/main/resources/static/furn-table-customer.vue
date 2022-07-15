@@ -1,6 +1,7 @@
 <template>
   <div class="container">
-    <p class="fs-5 m-4 mt-5" style="font-family: Georgia, serif;">If you need furniture, you can choose from the following to rent!</p>
+    <p class="fs-5 m-4 mt-5" style="font-family: Georgia, serif;">If you need furniture, you can choose from the
+      following to rent!</p>
     <div class="card mb-5">
       <div class="card-header h5 mb-4">Furniture List</div>
       <table class="table table-striped table-hover">
@@ -18,19 +19,15 @@
             <td>{{ furn.name }}</td>
             <td>{{ furn.amount }}</td>
             <td>{{ furn.amount - furn.leasedAmount }}</td>
-            <td>
-              <div class="text-center">
-                <img v-if="furn.imgUrl != null" height="100" :src="furn.imgUrl"/>
-                <p v-else>No image</p>
-              </div>
+            <td class="text-center">
+              <img :src="furn.imgUrl || './empty.jpg'" height="100" />
             </td>
             <td>
               <div class="input-group mt-4">
-                <input type="number" min="1" :max=furn.amount-furn.leasedAmount
-                class="form-control" placeholder="Amount"
-                v-model="furn.inputAmount" />
-                <button class="btn btn-primary" type="button"
-                @click="handleLease(furn.id, furn.inputAmount)">Lease</button>
+                <input type="number" min="1" :max="furn.amount - furn.leasedAmount" class="form-control"
+                  placeholder="Amount" v-model="furn.inputAmount" />
+                <button class="btn btn-primary" type="button" @click="handleLease(furn.id, furn.inputAmount)"
+                  :disabled="(furn.amount - furn.leasedAmount) <= 0">Lease</button>
               </div>
             </td>
           </tr>
@@ -56,8 +53,8 @@ module.exports = {
     },
   },
   computed: {
-    computedFurns(){
-      return this.furns.map(furn => ({...furn, inputAmount: ""}))
+    computedFurns() {
+      return this.furns.map(furn => ({ ...furn, inputAmount: "0" }))
     }
   }
 };
