@@ -68,6 +68,6 @@ public class FurnitureController {
             throw new AuthorizationException();
         }
         furnService.updateFurn(furnId, furnName, amount, imgFile);
-        return "";
+        return "Furniture Updated";
     }
 }
