@@ -41,12 +41,19 @@
                   <td><img width="100" height="100" v-bind:src="furn.imgUrl" /></td>
                   <td><button type="button" class="mt-4 btn btn-outline-danger"
                       @click="handleDelFurn(furn.id)">Del</button></td>
+                  <td><button @click="handleEditButton(furn)">edit</button></td>
                 </tr>
               </tbody>
             </table>
           </div>
         </div>
       </div>
+    </div>
+    <div v-if="isModalOpen" class="modal" style="display: block">
+      <input v-model="editingFurn.name" />
+      <input v-model.number="editingFurn.amount" />
+      <input type="file" ref="updatedImgFileInput" />
+      <button @click="handleEditSubmit">Submit</button>
     </div>
   </div>
 </template>
@@ -57,6 +64,8 @@ module.exports = {
     return {
       addFurn_name: null,
       addFurn_amount: null,
+      isModalOpen: false,
+      editingFurn: null,
     };
   },
   methods: {
@@ -77,6 +86,26 @@ module.exports = {
       await fetch(`/api/furniture/${furnId}`, { method: "DELETE" });
       this.$emit("furns-update");
     },
+
+    handleEditButton(furn){
+      this.editingFurn = JSON.parse(JSON.stringify(furn))
+      this.isModalOpen = true;
+    },
+
+    async handleEditSubmit(){
+      const formData = new FormData();
+      const file = this.$refs.updatedImgFileInput.files[0];
+      if(file)
+        formData.append("img_file", this.$refs.updatedImgFileInput.files[0]);
+      await fetch(`/api/furniture/${this.editingFurn.id}?name=${this.editingFurn.name}&amount=${this.editingFurn.amount}`,
+        {
+          method:"PATCH",
+          body: formData
+        }
+      );
+      this.isModalOpen = false;
+      this.$emit("furns-update");
+    }
   },
 };
 </script>
