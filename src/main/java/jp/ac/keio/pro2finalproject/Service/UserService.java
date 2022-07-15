@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import jp.ac.keio.pro2finalproject.Entity.User;
 import jp.ac.keio.pro2finalproject.Repository.UserRepository;
@@ -36,5 +37,12 @@ public class UserService {
 
     public void deleteById(long id) {
         userRepository.deleteById(id);
+    }
+
+    public void updateUser(Long id, String name, String password) {
+        var user = userRepository.findById(id).get();
+        user.setName(name);
+        user.setPassword(password);
+        userRepository.save(user);
     }
 }
