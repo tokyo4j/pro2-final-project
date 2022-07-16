@@ -121,11 +121,18 @@ module.exports = {
         }
       );
       this.$emit("furns-update");
+      this.$emit("notify", "Furniture added!", "success");
     },
 
     async handleDelFurn(furnId) {
-      await fetch(`/api/furniture/${furnId}`, { method: "DELETE" });
-      this.$emit("furns-update");
+      const res = await fetch(`/api/furniture/${furnId}`, { method: "DELETE" });
+      if (res.ok) {
+        this.$emit("furns-update");
+        this.$emit("notify", "Furniture deleted!", "success");
+      } else {
+        const json = await res.json();
+        this.$emit("notify", `ERROR: ${json.error}`, "alert");
+      }
     },
 
     handleEditButton(furn) {
@@ -147,6 +154,7 @@ module.exports = {
       );
       this.isModalOpen = false;
       this.$emit("furns-update");
+      this.$emit("notify", "Furniture updated!", "success");
     },
 
     updatePreview() {

@@ -50,11 +50,12 @@ module.exports = {
         method: "PUT",
       });
       this.$emit("furn-leased");
+      this.$emit("notify", "Lease completed!", "success");
     },
   },
   computed: {
     computedFurns() {
-      return this.furns.map(furn => ({ ...furn, inputAmount: "0" }))
+      return this.furns.map(furn => ({ ...furn, inputAmount: "1" }))
     }
   }
 };

@@ -12,15 +12,25 @@
   <body>
     <div id="app">
       <my-header></my-header>
-      <furn-table :furns="furns" @furns-update="syncFurns"></furn-table>
-      <user-table :users="users" @users-update="syncUsers"></user-table>
+      <furn-table
+        :furns="furns"
+        @furns-update="syncFurns"
+        @notify="notify"
+      ></furn-table>
+      <user-table
+        :users="users"
+        @users-update="syncUsers"
+        @notify="notify"
+      ></user-table>
       <lease-table
         :leases="leases"
         :users="users"
         :furns="furns"
         @leases-update="handleLeasesUpdate"
+        @notify="notify"
       ></lease-table>
       <my-footer></my-footer>
+      <notification :data="notificationData"></notification>
     </div>
   </body>
   <script>
@@ -31,6 +41,10 @@
           furns: [],
           users: [],
           leases: [],
+          notificationData: {
+            message: "none",
+            status: "success",
+          },
         };
       },
       components: {
@@ -39,6 +53,7 @@
         "user-table": httpVueLoader("./user-table.vue"),
         "lease-table": httpVueLoader("./lease-table.vue"),
         "my-footer": httpVueLoader("./footer.vue"),
+        notification: httpVueLoader("./notification.vue"),
       },
       methods: {
         async syncFurns() {
@@ -53,6 +68,10 @@
         async handleLeasesUpdate() {
           await this.syncLeases();
           await this.syncFurns();
+        },
+
+        notify(message, status) {
+          this.notificationData = { message, status };
         },
       },
       mounted() {

@@ -56,7 +56,7 @@ public class FurnService {
 
         if (amount != null) {
             if (amount < furn.getLeasedAmount())
-                throw new DataIntegrityException("Amount cannot exceed leased amount.");
+                throw new DataIntegrityException("Leased amount cannot exceed total amount.");
             else
                 furn.setAmount(amount);
         }

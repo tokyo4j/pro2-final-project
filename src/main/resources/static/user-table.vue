@@ -95,11 +95,18 @@ module.exports = {
         { method: "PUT" }
       );
       this.$emit("users-update");
+      this.$emit("notify", { message: "User added!", status: "success" });
     },
 
     async handleDelUser(userId) {
-      await fetch(`/api/user/${userId}`, { method: "DELETE" });
-      this.$emit("users-update");
+      const res = await fetch(`/api/user/${userId}`, { method: "DELETE" });
+      if (res.ok) {
+        this.$emit("users-update");
+        this.$emit("notify", "User deleted!");
+      } else {
+        const json = await res.json();
+        this.$emit("notify", `ERROR: ${json.error}`, "alert");
+      }
     },
 
     handleEditButton(user) {
@@ -113,6 +120,7 @@ module.exports = {
       });
       this.isModalOpen = false;
       this.$emit("users-update");
+      this.$emit("notify", { message: "User updated!", status: "success" });
     }
   },
 };

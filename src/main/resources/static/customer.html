@@ -15,12 +15,15 @@
       <furn-table-customer
         :furns="furns"
         @furn-leased="syncAll"
+        @notify="notify"
       ></furn-table-customer>
       <lease-table-customer
         :leases="leases"
         @furn-returned="syncAll"
+        @notify="notify"
       ></lease-table-customer>
       <my-footer></my-footer>
+      <notification :data="notificationData"></notification>
     </div>
   </body>
   <script>
@@ -29,6 +32,10 @@
         return {
           furns: [],
           leases: [],
+          notificationData: {
+            message: "none",
+            status: "success",
+          },
         };
       },
       el: "#app",
@@ -37,17 +44,24 @@
         "furn-table-customer": httpVueLoader("./furn-table-customer.vue"),
         "lease-table-customer": httpVueLoader("./lease-table-customer.vue"),
         "my-footer": httpVueLoader("./footer.vue"),
+        notification: httpVueLoader("./notification.vue"),
       },
       methods: {
         async syncFurns() {
           this.furns = await fetch("/api/furnitures").then((res) => res.json());
         },
+
         async syncLeases() {
           this.leases = await fetch("/api/leases").then((res) => res.json());
         },
+
         async syncAll() {
           await this.syncFurns();
           await this.syncLeases();
+        },
+
+        notify(message, status) {
+          this.notificationData = { message, status };
         },
       },
       async mounted() {
