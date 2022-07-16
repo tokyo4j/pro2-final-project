@@ -6,6 +6,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 import org.hibernate.annotations.ColumnDefault;
 
@@ -21,13 +23,16 @@ public class Furn {
     private Long id;
 
     @Column(name = "name")
+    @NotBlank
     private String name;
 
     @Column(name = "amount")
+    @NotNull
     private Integer amount;
 
     @Column(name = "leased_amount")
     @ColumnDefault("0")
+    @NotNull
     private Integer leasedAmount;
 
     @Column(name = "img_url")

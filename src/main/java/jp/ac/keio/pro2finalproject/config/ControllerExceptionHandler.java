@@ -1,5 +1,7 @@
 package jp.ac.keio.pro2finalproject.config;
 
+import javax.validation.ConstraintViolationException;
+
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.MissingServletRequestParameterException;
@@ -34,7 +36,7 @@ public class ControllerExceptionHandler {
         return new ErrorMessage(ex.getMessage());
     }
 
-    @ExceptionHandler(value = { DataIntegrityViolationException.class, })
+    @ExceptionHandler(value = { DataIntegrityViolationException.class, ConstraintViolationException.class })
     @ResponseStatus(value = HttpStatus.BAD_REQUEST)
     public ErrorMessage sqlException(Exception ex) {
         return new ErrorMessage("Could not execute query.");

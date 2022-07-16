@@ -90,12 +90,17 @@ module.exports = {
   },
   methods: {
     async handleAddUser() {
-      await fetch(
+      const res = await fetch(
         `/api/user?user_name=${this.addUser_name}&password=${this.addUser_password}`,
         { method: "PUT" }
       );
-      this.$emit("users-update");
-      this.$emit("notify", "User added!", "success");
+      if (res.ok) {
+        this.$emit("users-update");
+        this.$emit("notify", "User added!", "success");
+      } else {
+        const json = await res.json();
+        this.$emit("notify", `ERROR: ${json.error}`, "alert");
+      }
     },
 
     async handleDelUser(userId) {

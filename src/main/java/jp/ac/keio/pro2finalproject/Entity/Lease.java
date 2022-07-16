@@ -8,6 +8,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 
 import lombok.Data;
 
@@ -29,5 +30,6 @@ public class Lease {
     private User user;
 
     @Column(name = "amount")
+    @NotNull
     private Integer amount;
 }
