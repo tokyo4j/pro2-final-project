@@ -28,7 +28,7 @@ public class Furn {
 
     @Column(name = "leased_amount")
     @ColumnDefault("0")
-    private Integer leasedAmount = 0;
+    private Integer leasedAmount;
 
     @Column(name = "img_url")
     private String imgUrl;

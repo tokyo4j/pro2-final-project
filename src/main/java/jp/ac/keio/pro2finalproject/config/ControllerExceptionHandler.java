@@ -2,6 +2,7 @@ package jp.ac.keio.pro2finalproject.config;
 
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -33,10 +34,16 @@ public class ControllerExceptionHandler {
         return new ErrorMessage(ex.getMessage());
     }
 
-    @ExceptionHandler(value = { DataIntegrityViolationException.class })
+    @ExceptionHandler(value = { DataIntegrityViolationException.class, })
     @ResponseStatus(value = HttpStatus.BAD_REQUEST)
     public ErrorMessage sqlException(Exception ex) {
         return new ErrorMessage("Could not execute query.");
+    }
+
+    @ExceptionHandler(value = { MissingServletRequestParameterException.class })
+    @ResponseStatus(value = HttpStatus.BAD_REQUEST)
+    public ErrorMessage missingParamException(Exception ex) {
+        return new ErrorMessage("Invalid parameter.");
     }
 
     @Getter

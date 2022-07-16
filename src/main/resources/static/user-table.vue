@@ -95,7 +95,7 @@ module.exports = {
         { method: "PUT" }
       );
       this.$emit("users-update");
-      this.$emit("notify", { message: "User added!", status: "success" });
+      this.$emit("notify", "User added!", "success");
     },
 
     async handleDelUser(userId) {
@@ -120,7 +120,7 @@ module.exports = {
       });
       this.isModalOpen = false;
       this.$emit("users-update");
-      this.$emit("notify", { message: "User updated!", status: "success" });
+      this.$emit("notify", "User updated!", "success");
     }
   },
 };

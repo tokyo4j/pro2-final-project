@@ -72,12 +72,17 @@ module.exports = {
   },
   methods: {
     async handleAddLease() {
-      await fetch(
+      const res = await fetch(
         `/api/lease?user_id=${this.addLease_userId}&furniture_id=${this.addLease_furnId}&amount=${this.addLease_amount}`,
         { method: "PUT" }
       );
-      this.$emit("leases-update");
-      this.$emit("notify", "Lease Added!", "success");
+      if (res.ok) {
+        this.$emit("leases-update");
+        this.$emit("notify", "Lease Added!", "success");
+      } else {
+        const json = await res.json()
+        this.$emit("notify", `ERROR: ${json.error}`, "alert");
+      }
     },
 
     async handleDelLease(leaseId) {
