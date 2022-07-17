@@ -41,9 +41,14 @@ module.exports = {
   },
   methods: {
     async handleReturn(leaseId) {
-      await fetch(`/api/lease/${leaseId}`, { method: "DELETE" });
-      this.$emit("furn-returned");
-      this.$emit("notify", "You have returned furniture!", "success");
+      const res = await fetch(`/api/lease/${leaseId}`, { method: "DELETE" });
+      if (res.ok) {
+        this.$emit("furn-returned");
+        this.$emit("notify", "You have returned furniture!", "success");
+      } else {
+        const json = await res.json();
+        this.$emit("notify", `ERROR: ${json.error}`, "alert");
+      }
     },
   },
 };

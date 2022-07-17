@@ -12,7 +12,7 @@
           </div>
           <div class="col d-flex justify-content-center">
             <label class="m-2">Amount</label>
-            <input v-model.number="addFurn_amount" />
+            <input type="number" min="1" v-model.number="addFurn_amount" />
           </div>
           <div>
             <div class="row m-3">
@@ -102,7 +102,7 @@ module.exports = {
   props: ["furns"],
   data() {
     return {
-      addFurn_name: null,
+      addFurn_name: "",
       addFurn_amount: null,
       isModalOpen: false,
       editingFurn: null,
@@ -113,15 +113,20 @@ module.exports = {
     async handleAddFurn() {
       const formData = new FormData();
       formData.append("img_file", this.$refs.addFurn_imgFileInput.files[0]);
-      await fetch(
+      const res = await fetch(
         `/api/furniture?name=${this.addFurn_name}&amount=${this.addFurn_amount}`,
         {
           method: "PUT",
           body: formData,
         }
       );
-      this.$emit("furns-update");
-      this.$emit("notify", "Furniture added!", "success");
+      if (res.ok) {
+        this.$emit("furns-update");
+        this.$emit("notify", "Furniture added!", "success");
+      } else {
+        const json = await res.json();
+        this.$emit("notify", `ERROR: ${json.error}`, "alert");
+      }
     },
 
     async handleDelFurn(furnId) {
@@ -146,15 +151,20 @@ module.exports = {
       const file = this.$refs.updatedImgFileInput.files[0];
       if (file)
         formData.append("img_file", this.$refs.updatedImgFileInput.files[0]);
-      await fetch(`/api/furniture/${this.editingFurn.id}?name=${this.editingFurn.name}&amount=${this.editingFurn.amount}`,
+      const res = await fetch(`/api/furniture/${this.editingFurn.id}?name=${this.editingFurn.name}&amount=${this.editingFurn.amount}`,
         {
           method: "PATCH",
           body: formData
         }
       );
-      this.isModalOpen = false;
-      this.$emit("furns-update");
-      this.$emit("notify", "Furniture updated!", "success");
+      if (res.ok) {
+        this.isModalOpen = false;
+        this.$emit("furns-update");
+        this.$emit("notify", "Furniture updated!", "success");
+      } else {
+        const json = await res.json();
+        this.$emit("notify", `ERROR: ${json.error}`, "alert");
+      }
     },
 
     updatePreview() {

@@ -50,7 +50,7 @@
               <td>{{ lease.furn.id }}</td>
               <td>{{ lease.furn.name }}</td>
               <td>{{ lease.amount }}</td>
-              <td><img width="100" height="100" v-bind:src="lease.furn.imgUrl"></td>
+              <td><img height="100" v-bind:src="lease.furn.imgUrl"></td>
               <td><button type="button" class="mt-4 btn btn-outline-danger"
                   @click="handleDelLease(lease.id)">Del</button></td>
             </tr>
@@ -86,9 +86,14 @@ module.exports = {
     },
 
     async handleDelLease(leaseId) {
-      await fetch(`/api/lease/${leaseId}`, { method: "DELETE" });
-      this.$emit("leases-update");
-      this.$emit("notify", "Lease deleted!", "success");
+      const res = await fetch(`/api/lease/${leaseId}`, { method: "DELETE" });
+      if (res.ok) {
+        this.$emit("leases-update");
+        this.$emit("notify", "Lease deleted!", "success");
+      } else {
+        const json = await res.json();
+        this.$emit("notify", `ERROR: ${json.error}`, "alert");
+      }
     },
   },
 };

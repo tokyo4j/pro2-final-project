@@ -34,6 +34,8 @@ public class FurnService {
     public void saveFurn(String name, Integer amount, MultipartFile imgFile) {
         var furn = new Furn();
         furn.setName(name);
+        if (amount <= 0)
+            throw new DataIntegrityException("Amount must be positive.");
         furn.setAmount(amount);
 
         if (imgFile != null && !imgFile.isEmpty()) {

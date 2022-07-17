@@ -33,7 +33,7 @@ public class Furn {
     @Column(name = "leased_amount")
     @ColumnDefault("0")
     @NotNull
-    private Integer leasedAmount;
+    private Integer leasedAmount = 0;
 
     @Column(name = "img_url")
     private String imgUrl;

@@ -46,11 +46,16 @@ module.exports = {
   },
   methods: {
     async handleLease(furnId, amount) {
-      await fetch(`/api/lease?furniture_id=${furnId}&amount=${amount}`, {
+      const res = await fetch(`/api/lease?furniture_id=${furnId}&amount=${amount}`, {
         method: "PUT",
       });
-      this.$emit("furn-leased");
-      this.$emit("notify", "Lease completed!", "success");
+      if (res.ok) {
+        this.$emit("furn-leased");
+        this.$emit("notify", "Lease completed!", "success");
+      } else {
+        const json = await res.json();
+        this.$emit("notify", `ERROR: ${json.error}`, "alert");
+      }
     },
   },
   computed: {

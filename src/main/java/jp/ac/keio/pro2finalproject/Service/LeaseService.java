@@ -47,6 +47,8 @@ public class LeaseService {
 
     @Transactional
     public void addLease(long userId, long furnId, int amount) {
+        if (amount <= 0)
+            throw new DataIntegrityException("Amount must be positive.");
         var user = userRepository.getReferenceById(userId);
         var furn = furnRepository.findById(furnId).get();
         var currentLeasedAmount = furn.getLeasedAmount();

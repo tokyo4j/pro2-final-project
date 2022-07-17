@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import jp.ac.keio.pro2finalproject.Entity.User;
-import jp.ac.keio.pro2finalproject.Service.FurnService;
 import jp.ac.keio.pro2finalproject.Service.UserService;
 import jp.ac.keio.pro2finalproject.exception.AuthorizationException;
 import jp.ac.keio.pro2finalproject.exception.DataIntegrityException;
@@ -24,9 +23,6 @@ import jp.ac.keio.pro2finalproject.exception.DataIntegrityException;
 public class UserController {
     @Autowired
     UserService userService;
-
-    @Autowired
-    FurnService furnService;
 
     @GetMapping("users")
     public List<User> getAllUsers(@CookieValue("id") Long userId) {

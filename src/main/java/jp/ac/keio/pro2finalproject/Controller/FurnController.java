@@ -16,14 +16,11 @@ import org.springframework.web.multipart.MultipartFile;
 
 import jp.ac.keio.pro2finalproject.Entity.Furn;
 import jp.ac.keio.pro2finalproject.Service.FurnService;
-import jp.ac.keio.pro2finalproject.Service.UserService;
 import jp.ac.keio.pro2finalproject.exception.AuthorizationException;
 
 @RestController
 @RequestMapping("api")
-public class FurnitureController {
-    @Autowired
-    UserService userService;
+public class FurnController {
 
     @Autowired
     FurnService furnService;

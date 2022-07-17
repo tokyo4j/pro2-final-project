@@ -34,6 +34,7 @@ module.exports = {
     top: 10px;
     left: 50%;
     transform: translateX(-50%);
+    z-index: 99999;
 }
 
 .v-enter-active,

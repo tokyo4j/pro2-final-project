@@ -120,12 +120,17 @@ module.exports = {
     },
 
     async handleEditSubmit() {
-      await fetch(`/api/user/${this.editingUser.id}?name=${this.editingUser.name}&password=${this.editingUser.password}`, {
+      const res = await fetch(`/api/user/${this.editingUser.id}?name=${this.editingUser.name}&password=${this.editingUser.password}`, {
         method: "PATCH",
       });
-      this.isModalOpen = false;
-      this.$emit("users-update");
-      this.$emit("notify", "User updated!", "success");
+      if (res.ok) {
+        this.$emit("users-update");
+        this.$emit("notify", "User updated!", "success");
+        this.isModalOpen = false;
+      } else {
+        const json = await res.json();
+        this.$emit("notify", `ERROR: ${json.error}`, "alert");
+      }
     }
   },
 };
